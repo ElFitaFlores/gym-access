@@ -55,7 +55,7 @@
         $.ajax({
           url: "http://serviciosrestumg.azurewebsites.net/api/control_usuarios",
         }).done(function(data){
-          user = data;
+          updateTable(data);
         });*/
 
       $('#min').datepicker({

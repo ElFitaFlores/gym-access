@@ -13,4 +13,10 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('auth');
+
+Auth::routes();
+
+Route::get('/home', function(){
+    return view('welcome');
+})->name('home');
