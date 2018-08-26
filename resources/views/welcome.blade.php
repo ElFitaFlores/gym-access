@@ -16,6 +16,10 @@
 </div>
 <hr>
 <div class="row">
+    <button class="btn btn-dark ml-auto" onclick="updateTable()">Refrescar</button>
+</div>
+<hr>
+<div class="row">
     <div class="table-responsive">
         <table class="table table-bordered table-striped" id="usersTable">
             <thead class="thead-dark">
@@ -33,7 +37,7 @@
 <script>
     var table;
     $(function(){
-        var users = [
+       /*var users = [
           {
             "id": 1,
             "fecha_hora_ingreso": "2018-08-13T21:04:35.31",
@@ -49,14 +53,7 @@
             "fecha_hora_ingreso": "2018-08-14T03:16:01.127",
             "usuario": "test3"
           }
-        ];
-
-        /*var user = [];
-        $.ajax({
-          url: "http://serviciosrestumg.azurewebsites.net/api/control_usuarios",
-        }).done(function(data){
-          updateTable(data);
-        });*/
+        ];*/
 
       $('#min').datepicker({
         value: moment().startOf('month').format('YYYY-MM-DD'),
@@ -88,29 +85,70 @@
         }
       );
 
-        updateTable(users);
+      getData();
     });
 
-    function updateTable(object){
-      var parsedObject = $.map(object,function(i){
-        var fecha = moment(i.fecha_hora_ingreso);
-        return [{
-          "id": i.id,
-          "usuario": i.usuario,
+    function getData(){
+      var fecha = moment("2018-08-13T21:04:35.31");
+      var users = [
+        {
+          "id": 1,
           "fecha": fecha.format('YYYY-MM-DD'),
           "hora": fecha.format('hh:mm a'),
-        }]
-      });
+          "nombre": "usuario_test"
+        },
+        {
+          "id": 4,
+          "fecha": fecha.format('YYYY-MM-DD'),
+          "hora": fecha.format('hh:mm a'),
+          "nombre": "test2"
+        },
+        {
+          "id": 5,
+          "fecha": fecha.format('YYYY-MM-DD'),
+          "hora": fecha.format('hh:mm a'),
+          "nombre": "test3"
+        }
+      ];
 
       table = $("#usersTable").DataTable({
-        data: parsedObject,
-        columns: [
-          {data: 'id'},
-          {data: 'usuario'},
-          {data: 'fecha'},
-          {data: 'hora'},
-        ],
-      });
+                /*ajax: {
+                  type: "GET",
+                  url: 'http://serviciosrestumg.azurewebsites.net/api/vwControlUsuarios',
+                  dataSrc: function(json){
+                    return $.map(json,function(i){
+                      var fecha = moment(i.fecha_hora_ingreso);
+                      return [{
+                        "id": i.id,
+                        "nombre": i.nombre,
+                        "fecha": fecha.format('YYYY-MM-DD'),
+                        "hora": fecha.format('hh:mm a'),
+                      }]
+                    })
+                  }
+                },*/
+                data: users,
+                columns: [
+                  {data: 'id'},
+                  {data: 'nombre'},
+                  {data: 'fecha'},
+                  {data: 'hora'},
+                ],
+                order: [
+                  [2, 'desc'],
+                  [3, 'desc'],
+                ],
+                dom: 'Bf',
+                buttons: [
+                  'excel'
+                ],
+              });
+      /*table.buttons().container()
+        .appendTo( $('.col-sm-6:eq(0)', table.table().container() ) );*/
+    }
+
+    function updateTable(){
+      table.ajax.reload();
     }
 </script>
 @endsection

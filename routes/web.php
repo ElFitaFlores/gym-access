@@ -20,3 +20,7 @@ Auth::routes();
 Route::get('/home', function(){
     return view('welcome');
 })->name('home');
+
+Route::get('usuarios',function(){
+    return view('usuarios');
+})->middleware('auth')->name('usuarios');
